@@ -74,7 +74,9 @@ public class MotorController {
         private final static double RIGHT_RAMP_UP = 1;
         private final static double RIGHT_RAMP_DOWN = 0.4;
 
+    // Variables for motor orientation
     private static boolean isFacingForwards = true;
+    private static boolean activateTriggerIsLeft = true;
 
     // Variables for Autonomous Motion
 
@@ -253,6 +255,21 @@ public class MotorController {
     public static void setClimberDepositor(double position)
     {
         climberDepositor.setPosition(position);
+    }
+
+    /**
+     * A method for setting the trigger defined by the teleop to be up
+     */
+    public static void setTriggerUp()
+    {
+        if (activateTriggerIsLeft)
+        {
+            leftTrigger.setPosition(LEFT_TRIGGER_UP);
+        }
+        else
+        {
+            rightTrigger.setPosition(RIGHT_TRIGGER_UP);
+        }
     }
 
     // ===================================================================================================================================
