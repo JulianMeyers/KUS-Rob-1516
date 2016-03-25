@@ -27,8 +27,10 @@ public class MotorController {
         private static Servo leftTrigger;
         private static Servo rightTrigger;
         private static Servo climberDepositor;
-        private static Servo rfCowCatcher;
-        private static Servo lfCowCatcher;
+        private static Servo rightFrontCowCatcher;
+        private static Servo leftFrontCowCatcher;
+        private static Servo rightRearCowCatcher;
+        private static Servo leftRearCowCatcher;
         private static Servo shoulderServo;
         private static Servo elbowServo;
         private static Servo leftDebrisRamp;
@@ -39,11 +41,11 @@ public class MotorController {
         private final static double CLMB_DEP_UP = 0;
 
         private final static double RIGHT_TRIGGER_UP = 0.8;
-        private final static double RT_MID = 0.2;
-        private final static double RT_LOW = 0;
+        private final static double RIGHT_TRIGGER_MID = 0.2;
+        private final static double RIGHT_TRIGGER_LOW = 0;
         private final static double LEFT_TRIGGER_UP = 0.2;
-        private final static double LT_MID = 0.8;
-        private final static double LT_LOW = 1;
+        private final static double LEFT_TRIGGER_MID = 0.8;
+        private final static double LEFT_TRIGGER_LOW = 1;
 
         private final static double ELBW_POS_GOAL_MIN_VAL = 0;
         private final static double ELBW_POS_GOAL_MAX_VAL = 1;
@@ -59,6 +61,7 @@ public class MotorController {
         private final static double LEFT_FRONT_COW_CATCHER_DOWN = 0.65;
         private final static double RIGHT_FRONT_COW_CATCHER_UP = 0.8;
         private final static double RIGHT_FRONT_COW_CATCHER_DOWN = 0.35;
+
         private final static double LEFT_REAR_COW_CATCHER_UP = 0;
         private final static double RIGHT_REAR_COW_CATCHER_UP = 1;
         private final static double LEFT_REAR_COW_CATCHER_DOWN = 1;
@@ -104,8 +107,8 @@ public class MotorController {
         leftTrigger = hardwareMap.servo.get("Left_Trigger_Activator_Servo");
         rightTrigger = hardwareMap.servo.get("Right_Trigger_Activator_Servo");
         climberDepositor = hardwareMap.servo.get("Climber_Depositor_Servo");
-        rfCowCatcher = hardwareMap.servo.get("Right_Cow_Catcher_Servo");
-        lfCowCatcher = hardwareMap.servo.get("Left_Cow_Catcher_Servo");
+        rightFrontCowCatcher = hardwareMap.servo.get("Right_Cow_Catcher_Servo");
+        leftFrontCowCatcher = hardwareMap.servo.get("Left_Cow_Catcher_Servo");
         shoulderServo = hardwareMap.servo.get("Shoulder_Servo");
         elbowServo = hardwareMap.servo.get("Elbow_Servo");
         leftDebrisRamp = hardwareMap.servo.get("Left_Ramp_Servo");
@@ -130,8 +133,8 @@ public class MotorController {
         climberDepositor.setPosition(CLMB_DEP_REST);
         leftTrigger.setPosition(LEFT_TRIGGER_UP);
         rightTrigger.setPosition(RIGHT_TRIGGER_UP);
-        lfCowCatcher.setPosition(LEFT_FRONT_COW_CATCHER_DOWN);
-        rfCowCatcher.setPosition(RIGHT_FRONT_COW_CATCHER_DOWN);
+        leftFrontCowCatcher.setPosition(LEFT_FRONT_COW_CATCHER_DOWN);
+        rightFrontCowCatcher.setPosition(RIGHT_FRONT_COW_CATCHER_DOWN);
         elbowServo.setPosition(ELBW_POS_MIN_VAL);
         shoulderServo.setPosition(SHLDR_POS_MIN_VAL);
         rightDebrisRamp.setPosition(RIGHT_RAMP_UP);
@@ -164,6 +167,8 @@ public class MotorController {
     {
         isFacingForwards = !isFacingForwards;
     }
+
+
 
     // =======================================================================================
     // = DCMotor Functions === DCMotor Functions === DCMotor Functions === DCMotor Functions =
@@ -257,6 +262,16 @@ public class MotorController {
         climberDepositor.setPosition(position);
     }
 
+    public static void setActiveTriggerRight()
+    {
+        activateTriggerIsLeft = false;
+    }
+
+    public static void setActiveTriggerLeft()
+    {
+        activateTriggerIsLeft = true;
+    }
+
     /**
      * A method for setting the trigger defined by the teleop to be up
      */
@@ -269,6 +284,30 @@ public class MotorController {
         else
         {
             rightTrigger.setPosition(RIGHT_TRIGGER_UP);
+        }
+    }
+
+    public static void setTriggerMid()
+    {
+        if (activateTriggerIsLeft)
+        {
+            leftTrigger.setPosition(LEFT_TRIGGER_MID);
+        }
+        else
+        {
+            rightTrigger.setPosition(RIGHT_TRIGGER_MID);
+        }
+    }
+
+    public static void setTriggerLow()
+    {
+        if (activateTriggerIsLeft)
+        {
+            leftTrigger.setPosition(LEFT_TRIGGER_LOW);
+        }
+        else
+        {
+            rightTrigger.setPosition(RIGHT_TRIGGER_LOW);
         }
     }
 
