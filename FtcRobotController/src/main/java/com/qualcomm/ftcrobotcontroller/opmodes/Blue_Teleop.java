@@ -3,6 +3,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.ftcrobotcontroller.opmodes.MotorController;
 
 /**
  * Created by Julian on 1/7/16.
@@ -63,7 +64,7 @@ public class Blue_Teleop extends OpMode {
 
     @Override
     public void init() {
-        //Naming which motors and servos are which
+        //Naming motors and servos
         Upper_Right_Motor = hardwareMap.dcMotor.get("Upper_Right_Drive_Spinner");
         Lower_Right_Motor = hardwareMap.dcMotor.get("Lower_Right_Drive_Spinner");
         Upper_Left_Motor = hardwareMap.dcMotor.get("Upper_Left_Drive_Spinner");
@@ -100,7 +101,7 @@ public class Blue_Teleop extends OpMode {
 
         Left_DebrisRamp.setPosition(LRampUp);
 
-        //Which Name Correlates to Which Button
+        //Which name Correlates to which Button
         float LeftY1 = -gamepad1.left_stick_y;
         float RightY1 = -gamepad1.right_stick_y;
         float RightTrigger1 = gamepad1.right_trigger;
@@ -129,20 +130,21 @@ public class Blue_Teleop extends OpMode {
 
         //Drive Motor Controls
 
-        if (LeftBumper1 && !previousToggleButtonState) // Detect when the left bumper goes from pressed to not pressed
+        if (LeftBumper1 && !previousToggleButtonState) //Detect when the left bumper goes from pressed to not pressed
         {
             toggle = !toggle;
+            MotorController.switchFacing();
         }
-        previousToggleButtonState = LeftBumper1; // Update the previous state of the left bumper
+        previousToggleButtonState = LeftBumper1; //Update the previous state of the left bumper
 
-        if (toggle) // If you are heading forwards, work like normal tank drive
+        if (toggle) //If you are heading forwards, work like normal tank drive
         {
             Upper_Right_Motor.setPower(RightY1 * Math.abs(RightY1));
             Lower_Right_Motor.setPower(RightY1 * Math.abs(RightY1));
             Upper_Left_Motor.setPower(LeftY1 * Math.abs(LeftY1));
             Lower_Left_Motor.setPower(LeftY1 * Math.abs(LeftY1));
         }
-        else // If you are heading backwards, flip which motors are controlled by which joystick and invert motor values
+        else //If you are heading backwards, flip which motors are controlled by which joystick and invert motor values
         {
             Upper_Right_Motor.setPower(LeftY1 * -Math.abs(LeftY1));
             Lower_Right_Motor.setPower(LeftY1 * -Math.abs(LeftY1));
@@ -158,23 +160,23 @@ public class Blue_Teleop extends OpMode {
         }
         if(DPadLeft1){
             Left_Trigger.setPosition(LTMid);
-            //if dpad 1 Left is pressed Left Trigger moves to mid position
+            //if DPad 1 Left is pressed Left Trigger moves to mid position
         }
         if (DPadDown1) {
             Left_Trigger.setPosition(LTLow);
-            //if dpad 1 down is pressed Left Trigger moves to low position
+            //if DPad 1 down is pressed Left Trigger moves to low position
         }
 
         //Climber Depositor Controls
 
         if (RightBumper2) {
             Climber_Depositor.setPosition(ClmbDepUp);
-            //moves climber depositor to Depositing position
+            //moves climber depositor to depositing position
         }
 
         if (LeftBumper2) {
             Climber_Depositor.setPosition(ClmbDepRest);
-            //moves climber depositor to Storage position
+            //moves climber depositor to storage/up position
         }
 
         //Elbow Controls
@@ -194,12 +196,12 @@ public class Blue_Teleop extends OpMode {
         if (ButtonY1) {
             LF_CowCatcher.setPosition(LeftFrontCowCatcherUp);
             RF_CowCatcher.setPosition(RightFrontCowCatcherUp);
-            //if Y1 is pressed CowCatchers go to up position
+            //if Y1 is pressed Cowcatchers go to up position
         }
         if (ButtonA1) {
             LF_CowCatcher.setPosition(LeftFrontCowCatcherDown);
             RF_CowCatcher.setPosition(RightFrontCowCatcherDown);
-            //if A1 is pressed CowCatchers got to down position
+            //if A1 is pressed Cowcatchers got to down position
         }
 
 
@@ -260,6 +262,8 @@ public class Blue_Teleop extends OpMode {
             //backward at half speed (return button)
             DebrisDepositorSpinner.setPower(0);
         }
+
+        //Debris Ramp controls (Right only for blue side)
 
         if (DPadUp2) {
 

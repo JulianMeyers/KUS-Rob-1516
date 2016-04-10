@@ -50,8 +50,8 @@ public class Red_Teleop extends OpMode {
     private final static double ShldrPosMaxVal = 0.5;
     private final static double LeftFrontCowCatcherUp = 0.35; //changed from 0.3
     private final static double LeftFrontCowCatcherDown = 0.8; //changed from 0.65
-    private final static double RightFrontCowCatcherUp = 0.75;//changed from 0.8
-    private final static double RightFrontCowCatcherDown = 0.2;//changed from 0.35
+    private final static double RightFrontCowCatcherUp = 0.75; //changed from 0.8
+    private final static double RightFrontCowCatcherDown = 0.2; //changed from 0.35
     private final static double LSRPwrOut = -1;
     private final static double LSRPwrIn = 1;
     private final static double LSLPwrIn = 1;
@@ -127,11 +127,12 @@ public class Red_Teleop extends OpMode {
 
         //Drive Motor Controls
 
-        if (LeftBumper1 && !previousToggleButtonState) // Detect when the left bumper goes from pressed to not pressed
+        if (LeftBumper1 && !previousToggleButtonState) //
+        // Detect when the left bumper goes from pressed to not pressed
         {
             toggle = !toggle;
         }
-        previousToggleButtonState = LeftBumper1; // Update the previous state of the left bumper
+        previousToggleButtonState = LeftBumper1; //Update the previous state of the left bumper
 
         if (toggle) // If you are heading forwards, work like normal tank drive
         {
@@ -147,6 +148,7 @@ public class Red_Teleop extends OpMode {
             Upper_Left_Motor.setPower(RightY1 * -Math.abs(RightY1));
             Lower_Left_Motor.setPower(RightY1 * -Math.abs(RightY1));
         }
+
 
         //Trigger Controls
 
@@ -165,7 +167,7 @@ public class Red_Teleop extends OpMode {
         }
 
 
-//Climber Depositor Controls
+        //Climber Depositor Controls
 
         if (RightBumper2) {
             Climber_Depositor.setPosition(ClmbDepUp);
@@ -261,6 +263,8 @@ public class Red_Teleop extends OpMode {
             DebrisDepositorSpinner.setPower(0);
         }
 
+        //Debris Ramp Controls
+
         if (DPadUp2) {
 
                 //Moves ramp to up position
@@ -272,6 +276,8 @@ public class Red_Teleop extends OpMode {
                 //moves ramp to down position
                 Left_DebrisRamp.setPosition(LRampDown);
         }
+
+
         }
 
 

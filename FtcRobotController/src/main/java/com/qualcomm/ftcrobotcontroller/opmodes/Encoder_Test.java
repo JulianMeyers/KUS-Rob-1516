@@ -19,21 +19,9 @@ public class Encoder_Test extends LinearOpMode {
         waitForStart();
         MotorController.init(hardwareMap, this);
 
-        MotorController.displayMovementEncoderValues();
-        double distanceMoved = MotorController.goForwards(1, 1);
-        telemetry.addData("Distance Moved = ", distanceMoved);
-        if (distanceMoved < 0.99)
-            telemetry.addData("Moved Enough = ", false);
-        else
-            telemetry.addData("Moved Enough = ", true);
-        MotorController.displayMovementEncoderValues();
+        double distanceMoved = MotorController.goForwards(1, 1, true);
 
-        double angleMoved = MotorController.turn(1, 180);
-        telemetry.addData("Angle Moved Through = ", angleMoved);
-        if (angleMoved < 179.9)
-            telemetry.addData("Turned Enough = ", false);
-        else
-            telemetry.addData("Turned Enough = ", true);
+        double angleMoved = MotorController.turn(1, 180, true);
     }
 
 }

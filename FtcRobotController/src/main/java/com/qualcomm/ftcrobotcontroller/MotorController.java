@@ -321,7 +321,7 @@ public class MotorController {
      * @param distance - The distance in meters to move
      * @return The distance successfully moved by the robot
      */
-    public static double goForwards(double power, double distance)
+    public static double goForwards(double power, double distance, boolean showTelemetry)
     {
         int encoderDistance = (int)((PULSES_PER_REVOLUTION * distance)/(PULLEY_CIRCUMFERENCE));
 
@@ -383,19 +383,27 @@ public class MotorController {
 
             if (ticksWithNoMovementLeft > TOO_MANY_TICKS_WITHOUT_MOVING || ticksWithNoMovementRight > TOO_MANY_TICKS_WITHOUT_MOVING)
             {
-                break;
+                break;  // Exit the while loop
             }
 
-            prevDistanceLeft = upperLeftMotor.getCurrentPosition(); // Update the previous position variable
-            prevDistanceRight = upperRightMotor.getCurrentPosition(); // Update the previous position variable
+            prevDistanceLeft = upperLeftMotor.getCurrentPosition() - initialPositionUpperLeftMotor; // Update the previous position variable
+            prevDistanceRight = upperRightMotor.getCurrentPosition() - initialPositionUpperRightMotor; // Update the previous position variable
+
+            // If we want to show the distances on telemtry, show it
+            if (showTelemetry)
+            {
+                double leftMotorDistance = (upperLeftMotor.getCurrentPosition() - initialPositionUpperLeftMotor) / PULSES_PER_REVOLUTION * PULLEY_CIRCUMFERENCE;
+                currentOperator.telemetry.addData("Left Motor Distance = ", leftMotorDistance);
+                double rightMotorDistance = (upperRightMotor.getCurrentPosition() - initialPositionUpperRightMotor) / PULSES_PER_REVOLUTION * PULLEY_CIRCUMFERENCE;
+                currentOperator.telemetry.addData("Right Motor Distance = ", rightMotorDistance);
+            }
 
             // Fancy code for putting in a delay
             try
             {
                 Thread.sleep(10);
             }
-            catch (InterruptedException e)
-            {
+            catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         }
@@ -417,7 +425,7 @@ public class MotorController {
      * @param angle - The angle through which to turn to the right
      * @return The angle successfully moved through by the robot
      */
-    public static double turn(double power, double angle)
+    public static double turn(double power, double angle, boolean showTelemetry)
     {
         double distanceAlongCircleToTurn = Math.toRadians(angle) * DISTANCE_FROM_CENTER_TO_TREAD;
         int encoderDistance = (int)((PULSES_PER_REVOLUTION * distanceAlongCircleToTurn)/(PULLEY_CIRCUMFERENCE));
@@ -444,18 +452,20 @@ public class MotorController {
         upperLeftMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         upperRightMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         upperRightMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        int initialPositionUpperRightMotor = upperRightMotor.getCurrentPosition();
+        int initialPositionUpperLeftMotor = upperLeftMotor.getCurrentPosition();
 
         setPowerForTurn(power);
 
         // A loop for moving the wheels until they move the required distance
         // Will stop the wheels when they get stuck
-        while (upperLeftMotor.getCurrentPosition() <= encoderDistance || upperRightMotor.getCurrentPosition() >= -encoderDistance)
+        while (Math.abs(upperLeftMotor.getCurrentPosition() - initialPositionUpperLeftMotor) <= Math.abs(encoderDistance) || Math.abs(upperRightMotor.getCurrentPosition() - initialPositionUpperRightMotor) <= Math.abs(encoderDistance))
         {
-            if (upperLeftMotor.getCurrentPosition() >= encoderDistance)
+            if (Math.abs(upperLeftMotor.getCurrentPosition() - initialPositionUpperLeftMotor) <= Math.abs(encoderDistance))
             {
                 setLeftMotors(0); // Stop Motor if left side is in position
             }
-            else if (upperLeftMotor.getCurrentPosition() == prevDistanceLeft)
+            else if ((upperLeftMotor.getCurrentPosition() - initialPositionUpperLeftMotor) == prevDistanceLeft)
             {
                 ticksWithNoMovementLeft++; // Wow you aren't moving, add to the number of ticks you aren't in position
             }
@@ -465,11 +475,11 @@ public class MotorController {
             }
 
 
-            if (upperRightMotor.getCurrentPosition() <= -encoderDistance)
+            if (Math.abs(upperRightMotor.getCurrentPosition() - initialPositionUpperRightMotor) <= Math.abs(encoderDistance))
             {
                 setRightMotors(0);  // Stop Motor if left side is in position
             }
-            else if (upperRightMotor.getCurrentPosition() == prevDistanceRight)
+            else if ((upperRightMotor.getCurrentPosition() - initialPositionUpperRightMotor) == prevDistanceRight)
             {
                 ticksWithNoMovementRight++; // Wow you aren't moving, add to the number of ticks you aren't in position
             }
@@ -483,10 +493,18 @@ public class MotorController {
                 break;
             }
 
-            prevDistanceLeft = upperLeftMotor.getCurrentPosition(); // Update the previous position variable
-            prevDistanceRight = upperRightMotor.getCurrentPosition(); // Update the previous position variable
+            prevDistanceLeft = (upperLeftMotor.getCurrentPosition() - initialPositionUpperLeftMotor); // Update the previous position variable
+            prevDistanceRight = (upperRightMotor.getCurrentPosition() - initialPositionUpperRightMotor); // Update the previous position variable
 
-            displayMovementEncoderValues();
+            // If we want to show the distances on telemtry, show it
+            if (showTelemetry)
+            {
+                currentOperator.telemetry.addData("Distance to move = ", distanceAlongCircleToTurn);
+                double leftMotorDistance = (upperLeftMotor.getCurrentPosition() - initialPositionUpperLeftMotor) / PULSES_PER_REVOLUTION * PULLEY_CIRCUMFERENCE;
+                currentOperator.telemetry.addData("Left Motor Distance = ", leftMotorDistance);
+                double rightMotorDistance = (upperRightMotor.getCurrentPosition() - initialPositionUpperRightMotor) / PULSES_PER_REVOLUTION * PULLEY_CIRCUMFERENCE;
+                currentOperator.telemetry.addData("Right Motor Distance = ", rightMotorDistance);
+            }
 
             // Fancy code for putting in a delay
             try
