@@ -19,9 +19,9 @@ public class Encoder_Test extends LinearOpMode {
         waitForStart();
         MotorController.init(hardwareMap, this);
 
-        double distanceMoved = MotorController.goForwards(1, 1, true);
+        double distanceMoved = MotorController.goForwards(1, 1, true, 100);
 
-        double angleMoved = MotorController.turn(1, 180, true);
+        //double angleMoved = MotorController.turn(1, 180, true);
     }
 
 }

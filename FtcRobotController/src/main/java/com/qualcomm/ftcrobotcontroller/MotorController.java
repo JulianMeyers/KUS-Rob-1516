@@ -311,6 +311,11 @@ public class MotorController {
         }
     }
 
+    public static void setFrontCowcatchersUp()
+    {
+
+    }
+
     // ===================================================================================================================================
     // = Autonomous Utility Functions === Autonomous Utility Functions === Autonomous Utility Functions === Autonomous Utility Functions =
     // ===================================================================================================================================
@@ -321,7 +326,7 @@ public class MotorController {
      * @param distance - The distance in meters to move
      * @return The distance successfully moved by the robot
      */
-    public static double goForwards(double power, double distance, boolean showTelemetry)
+    public static double goForwards(double power, double distance, boolean showTelemetry, int ticksPerStep)
     {
         int encoderDistance = (int)((PULSES_PER_REVOLUTION * distance)/(PULLEY_CIRCUMFERENCE));
 
@@ -334,17 +339,42 @@ public class MotorController {
         if (distance == 0)
             return 0;
 
-        // Variables for determining when the robot gets stuck
-        int prevDistanceLeft = 0;
-        int ticksWithNoMovementLeft = 0;
-        int prevDistanceRight = 0;
-        int ticksWithNoMovementRight = 0;
-
         // Reset encoders and set motors to keep track of distance moved
         upperLeftMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         upperLeftMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
         upperRightMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         upperRightMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+
+        int initialPositionUpperRightMotor = upperRightMotor.getCurrentPosition();
+        int initialPositionUpperLeftMotor = upperLeftMotor.getCurrentPosition();
+
+        for (int i = 0; i < encoderDistance; i += ticksPerStep)
+        {
+            int ticksToMove = Math.min(ticksPerStep, encoderDistance - i);
+
+            int ticksWithoutMovement = moveTicks(ticksToMove, power, showTelemetry);
+
+            if (ticksWithoutMovement > TOO_MANY_TICKS_WITHOUT_MOVING)
+            {
+                break;
+            }
+        }
+
+        // Average left and right encoder distances
+        double averageOfLeftAndRightEncoderDistance = ((upperLeftMotor.getCurrentPosition()- initialPositionUpperLeftMotor) + (upperRightMotor.getCurrentPosition() - initialPositionUpperRightMotor))/2D;
+
+        // Convert encoder distance to meter and give back that value
+        return (averageOfLeftAndRightEncoderDistance/PULSES_PER_REVOLUTION) * (PULLEY_CIRCUMFERENCE);
+    }
+
+    public static int moveTicks(int encoderDistance, double power, boolean showTelemetry)
+    {
+        int prevDistanceLeft = upperLeftMotor.getCurrentPosition();
+        int prevDistanceRight = upperRightMotor.getCurrentPosition();
+
+        int ticksWithNoMovementLeft = 0;
+        int ticksWithNoMovementRight = 0;
+
         int initialPositionUpperRightMotor = upperRightMotor.getCurrentPosition();
         int initialPositionUpperLeftMotor = upperLeftMotor.getCurrentPosition();
 
@@ -352,9 +382,9 @@ public class MotorController {
 
         // A loop for moving the wheels until they move the required distance
         // Will stop the wheels when they get stuck
-        while ((upperLeftMotor.getCurrentPosition()-initialPositionUpperLeftMotor) < encoderDistance || (upperRightMotor.getCurrentPosition()-initialPositionUpperRightMotor) < encoderDistance)
+        while (Math.abs(upperLeftMotor.getCurrentPosition()-initialPositionUpperLeftMotor) < Math.abs(encoderDistance) || Math.abs(upperRightMotor.getCurrentPosition()-initialPositionUpperRightMotor) < Math.abs(encoderDistance))
         {
-            if ((upperLeftMotor.getCurrentPosition()-initialPositionUpperLeftMotor) >= encoderDistance)
+            if (Math.abs(upperLeftMotor.getCurrentPosition()-initialPositionUpperLeftMotor) < Math.abs(encoderDistance))
             {
                 setLeftMotors(0); // Stop Motor if left side is in position
             }
@@ -368,7 +398,7 @@ public class MotorController {
             }
 
 
-            if ((upperRightMotor.getCurrentPosition() - initialPositionUpperRightMotor) >= encoderDistance)
+            if (Math.abs(upperRightMotor.getCurrentPosition()-initialPositionUpperRightMotor) < Math.abs(encoderDistance))
             {
                 setRightMotors(0);  // Stop Motor if left side is in position
             }
@@ -397,26 +427,13 @@ public class MotorController {
                 double rightMotorDistance = (upperRightMotor.getCurrentPosition() - initialPositionUpperRightMotor) / PULSES_PER_REVOLUTION * PULLEY_CIRCUMFERENCE;
                 currentOperator.telemetry.addData("Right Motor Distance = ", rightMotorDistance);
             }
-
-            // Fancy code for putting in a delay
-            try
-            {
-                Thread.sleep(10);
-            }
-            catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
         }
 
         // Turn off the motors
         setLeftMotors(0);
         setRightMotors(0);
 
-        // Average left and right encoder distances
-        double averageOfLeftAndRightEncoderDistance = ((upperLeftMotor.getCurrentPosition()- initialPositionUpperLeftMotor) + (upperRightMotor.getCurrentPosition() - initialPositionUpperRightMotor))/2D;
-
-        // Convert encoder distance to meter and give back that value
-        return (averageOfLeftAndRightEncoderDistance/PULSES_PER_REVOLUTION) * (PULLEY_CIRCUMFERENCE);
+        return Math.min(ticksWithNoMovementLeft, ticksWithNoMovementRight);
     }
 
     /**

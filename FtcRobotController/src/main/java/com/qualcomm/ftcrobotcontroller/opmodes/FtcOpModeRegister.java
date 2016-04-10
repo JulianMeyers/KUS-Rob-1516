@@ -32,5 +32,6 @@ public class FtcOpModeRegister implements OpModeRegister {
     //manager.register("Encoder Test", Encoder_Test.class);
     //manager.register("Encoder Hardware Check", Encoder_Hardware_Check.class);
     manager.register("Pregame_Setup", Pregame_Setup.class);
+    manager.register("Encoder_Test", Encoder_Test.class);
   }
 }
