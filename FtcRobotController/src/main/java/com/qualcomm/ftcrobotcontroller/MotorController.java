@@ -91,6 +91,11 @@ public class MotorController {
         private static double DISTANCE_FROM_CENTER_TO_TREAD = 192.0875;
         private static int TOO_MANY_TICKS_WITHOUT_MOVING = 50;
 
+        // Variables used for defaults in movment functions
+        // Used in autonomous motion
+
+        private static int DEFUALT_TICKS_PER_STEP = 100;
+
     private static OpMode currentOperator;
 
     public static void init(HardwareMap hardwareMap, OpMode operator)
@@ -231,6 +236,51 @@ public class MotorController {
     {
         setLeftMotors(power);
         setRightMotors(-power);
+    }
+
+    public static void setLiftSpinnerFloat()
+    {
+        liftSpinnerR.setPowerFloat();
+        liftSpinnerL.setPowerFloat();;
+    }
+
+    public static void setLiftSpinnerOff()
+    {
+        liftSpinnerL.setPower(0);
+        liftSpinnerR.setPower(0);
+    }
+
+    public static void setLiftSpinnerIn()
+    {
+        liftSpinnerL.setPower(LIFT_SPINNER_LEFT_PWR_IN);
+        liftSpinnerR.setPower(LIFT_SPINNER_RIGHT_PWR_IN);
+    }
+
+    public static void setLiftSpinnerOut()
+    {
+        liftSpinnerL.setPower(LIFT_SPINNER_LEFT_PWR_OUT);
+        liftSpinnerR.setPower(LIFT_SPINNER_RIGHT_PWR_OUT);
+    }
+
+    public static void setLiftSpinner(double power)
+    {
+        liftSpinnerL.setPower(power);
+        liftSpinnerR.setPower(power);
+    }
+
+    public static void setDebrisCollectionSpinnerFloat()
+    {
+        debrisCollectionSpinner.setPowerFloat();
+    }
+
+    public static void setDebrisCollectionSpinner(double power)
+    {
+        debrisCollectionSpinner.setPower(power);
+    }
+
+    public static void setDebrisDepositorSpinner(double power)
+    {
+        debrisDepositorSpinner.setPower(power);
     }
 
     // =======================================================================================================
@@ -379,40 +429,6 @@ public class MotorController {
         rightDebrisRamp.setPosition(RIGHT_RAMP_DOWN);
     }
 
-    public static void setLiftSpinnerOff()
-    {
-        liftSpinnerL.setPower(0);
-        liftSpinnerR.setPower(0);
-    }
-
-    public static void setLiftSpinnerIn()
-    {
-        liftSpinnerL.setPower(LIFT_SPINNER_LEFT_PWR_IN);
-        liftSpinnerR.setPower(LIFT_SPINNER_RIGHT_PWR_IN);
-    }
-
-    public static void setLiftSpinnerOut()
-    {
-        liftSpinnerL.setPower(LIFT_SPINNER_LEFT_PWR_OUT);
-        liftSpinnerR.setPower(LIFT_SPINNER_RIGHT_PWR_OUT);
-    }
-
-    public static void setLiftSpinner(double power)
-    {
-        liftSpinnerL.setPower(power);
-        liftSpinnerR.setPower(power);
-    }
-
-    public static void setDebrisCollectionSpinner(double power)
-    {
-        debrisCollectionSpinner.setPower(power);
-    }
-
-    public static void setDebrisDepositorSpinner(double power)
-    {
-        debrisDepositorSpinner.setPower(power);
-    }
-
     /**
      * A function that takes a fraction from 0 -> 1 and sets the shoulder servo to the position
      * that fraction of the way from SHOULDER_MIN_VAL -> SHOULDER_MAX_VAL
@@ -442,9 +458,11 @@ public class MotorController {
         int prevDistanceLeft = upperLeftMotor.getCurrentPosition() - initialPositionUpperLeftMotor;
         int prevDistanceRight = upperRightMotor.getCurrentPosition() - initialPositionUpperRightMotor;
 
+        // Values for how many ticks have passed without movement on the left and right side
         int ticksWithNoMovementLeft = 0;
         int ticksWithNoMovementRight = 0;
 
+        // Start the motors on each side moving
         setLeftMotors(powerLeft);
         setRightMotors(powerRight);
 
@@ -511,27 +529,32 @@ public class MotorController {
         setLeftMotors(0);
         setRightMotors(0);
 
-        return Math.min(ticksWithNoMovementLeft, ticksWithNoMovementRight);
+        return Math.max(ticksWithNoMovementLeft, ticksWithNoMovementRight);
     }
 
     /**
      * Tell the robot to move a certain number of meters at a certain power level
      * @param power - The rate at which you are moving forwards
      * @param distance - The distance in meters to move
+     * @param showTelemetry - Whether or not distance values should be output by the robot to telemetry
+     * @param ticksPerStep - How many encoder ticks should be moved by the robot each step
      * @return The distance successfully moved by the robot
      */
     public static double goForwards(double power, double distance, boolean showTelemetry, int ticksPerStep)
     {
+        // If the distance is zero we can stop now
+        if (distance == 0)
+            return 0;
+
+        // Determine how many ticks of the motor need to be moved
         int encoderDistance = (int)((PULSES_PER_REVOLUTION * distance)/(PULLEY_CIRCUMFERENCE));
 
-        // Controls for setting power direction
+        // Controls for setting power based off of whether the distance is forwards(positive)
+        // or backwards (negative)
         if (distance < 0)
             power = - Math.abs(power);
         else
             power = Math.abs(power);
-
-        if (distance == 0)
-            return 0;
 
         // Reset encoders and set motors to keep track of distance moved
         upperLeftMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
@@ -539,24 +562,56 @@ public class MotorController {
         upperRightMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         upperRightMotor.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
 
+        // Keep track of the initial position of the enocders
         int initialPositionUpperRightMotor = upperRightMotor.getCurrentPosition();
         int initialPositionUpperLeftMotor = upperLeftMotor.getCurrentPosition();
 
+        // A for loop that has the robot move forwards by small increments (ticksPerStep) so that
+        // the robot maintains it movement straight
+
         for (int encoderTarget = ticksPerStep; encoderTarget < encoderDistance; encoderTarget += Math.min(ticksPerStep, encoderDistance - encoderTarget))
         {
+            // Tell the robot to move to a certain offset of ticks from the initial position recorded
+            // Record the number of ticks the robot had been locked in one spot on either side
             int ticksWithoutMovement = moveTicks(encoderTarget, initialPositionUpperLeftMotor, initialPositionUpperRightMotor, power, power, showTelemetry);
 
+            // If the number of ticks the robot was locked in one spot was too large, stop trying to move forwards
             if (ticksWithoutMovement > TOO_MANY_TICKS_WITHOUT_MOVING)
             {
                 break;
             }
         }
 
-        // Average left and right encoder distances
+        // Average left and right encoder distances so that we can determine how far the robot has moved
         double averageOfLeftAndRightEncoderDistance = ((upperLeftMotor.getCurrentPosition()- initialPositionUpperLeftMotor) + (upperRightMotor.getCurrentPosition() - initialPositionUpperRightMotor))/2D;
 
         // Convert encoder distance to meter and give back that value
         return (averageOfLeftAndRightEncoderDistance/PULSES_PER_REVOLUTION) * (PULLEY_CIRCUMFERENCE);
+    }
+
+    /**
+     * Wrapper function for goForwards that uses a default value for ticks per step which is a
+     * constant defined at the top of this program
+     * @param power
+     * @param distance
+     * @param showTelemetry
+     * @return
+     */
+    public static double goForwards(double power, double distance, boolean showTelemetry)
+    {
+        return goForwards(power, distance, showTelemetry, DEFUALT_TICKS_PER_STEP);
+    }
+
+    /**
+     * Wrapper function for goForwards that doesn't output to telemtry and uses a constant value
+     * defined at the top of this program for ticks per step
+     * @param power
+     * @param distance
+     * @return
+     */
+    public static double goForwards(double power, double distance)
+    {
+        return goForwards(power, distance, false, DEFUALT_TICKS_PER_STEP);
     }
 
     /**
@@ -614,5 +669,30 @@ public class MotorController {
         double distanceMovedAlongCircle = (averageOfLeftAndRightEncoderDistance/PULSES_PER_REVOLUTION) * (PULLEY_CIRCUMFERENCE);
 
         return Math.toDegrees(distanceMovedAlongCircle / DISTANCE_FROM_CENTER_TO_TREAD);
+    }
+
+    /**
+     * Wrapper function for goForwards that uses a default value for ticks per step which is a
+     * constant defined at the top of this program
+     * @param power
+     * @param angle
+     * @param showTelemetry
+     * @return
+     */
+    public static double turn(double power, double angle, boolean showTelemetry)
+    {
+        return turn(power, angle, showTelemetry, DEFUALT_TICKS_PER_STEP);
+    }
+
+    /**
+     * Wrapper function for goForwards that doesn't output to telemtry and uses a constant value
+     * defined at the top of this program for ticks per step
+     * @param power
+     * @param angle
+     * @return
+     */
+    public static double turn(double power, double angle)
+    {
+        return turn(power, angle, false, DEFUALT_TICKS_PER_STEP);
     }
 }

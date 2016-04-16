@@ -21,7 +21,7 @@ public class Encoder_Test extends LinearOpMode {
 
         double distanceMoved = MotorController.goForwards(1, 1, true, 100);
 
-        //double angleMoved = MotorController.turn(1, 180, true);
+        double angleMoved = MotorController.turn(1, 180, true, 100);
     }
 
 }
