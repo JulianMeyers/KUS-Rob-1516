@@ -1,5 +1,6 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import com.qualcomm.ftcrobotcontroller.MotorController;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -164,6 +165,14 @@ public class Red_Teleop extends OpMode {
         if (DPadDown1) {
             Right_Trigger.setPosition(RTLow);
             //if dpad 1 down is pressed Right Trigger moves to low position
+        }
+
+        if (ButtonX1) {
+            MotorController.setRearCowcatchersUp();
+        }
+
+        if (ButtonB1) {
+            MotorController.setRearCowcatchersDown();
         }
 
 

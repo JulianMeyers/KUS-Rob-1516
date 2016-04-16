@@ -86,7 +86,8 @@ public class Blue_Teleop extends OpMode {
         //Reversing the direction of the left motors due to positioning
         Upper_Left_Motor.setDirection(DcMotor.Direction.REVERSE);
         Lower_Left_Motor.setDirection(DcMotor.Direction.REVERSE);
-        Lift_SpinnerL.setDirection(DcMotor.Direction.REVERSE);
+        //Lift_SpinnerL.setDirection(DcMotor.Direction.REVERSE);
+        //Lift_SpinnerR.setDirection(DcMotor.Direction.REVERSE);
 
         //Left_Trigger.setPosition(LTUp);
         //Right_Trigger.setPosition(RTUp);
@@ -177,6 +178,14 @@ public class Blue_Teleop extends OpMode {
         if (LeftBumper2) {
             Climber_Depositor.setPosition(ClmbDepRest);
             //moves climber depositor to storage/up position
+        }
+
+        if (ButtonX1) {
+            MotorController.setRearCowcatchersUp();
+        }
+
+        if (ButtonB1) {
+            MotorController.setRearCowcatchersDown();
         }
 
         //Elbow Controls
