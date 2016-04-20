@@ -37,8 +37,8 @@ public class MotorController {
         private static Servo rightDebrisRamp;
 
         // Variables for Positions and Speeds
-        private final static double CLMB_DEP_REST = 1;
-        private final static double CLMB_DEP_UP = 0;
+        private final static double CLIMBER_DEPOSITOR_REST = 1;
+        private final static double CLIMBER_DEPOSITOR_UP = 0;
 
         private final static double RIGHT_TRIGGER_UP = 0.8;
         private final static double RIGHT_TRIGGER_MID = 0.2;
@@ -47,13 +47,9 @@ public class MotorController {
         private final static double LEFT_TRIGGER_MID = 0.8;
         private final static double LEFT_TRIGGER_LOW = 1;
 
-        private final static double ELBOW_POS_GOAL_MIN_VAL = 0;
-        private final static double ELBOW_POS_GOAL_MAX_VAL = 1;
         private final static double ELBOW_POS_MIN_VAL = 0.7;
         private final static double ELBOW_POS_MAX_VAL = 0.9;
 
-        private final static double SHOULDER_POS_GOAL_MIN_VAL = 0;
-        private final static double SHOULDER_POS_GOAL_MAX_VAL = 1;
         private final static double SHOULDER_POS_MIN_VAL = 0.15;
         private final static double SHOULDER_POS_MAX_VAL = 0.5;
 
@@ -77,19 +73,22 @@ public class MotorController {
         private final static double RIGHT_RAMP_UP = 1;
         private final static double RIGHT_RAMP_DOWN = 0.4;
 
-    // Variables for motor orientation
+    // Variables and Constants for motor orientation
+    public static final boolean FORWARDS_DIRECTION = true;
+    public static final boolean REVERSE_DIRECTION = false;
     private static boolean isFacingForwards = true;
-    private static boolean activateTriggerIsLeft = true;
+
+    private static boolean sideIsBlue = true;
 
     // Variables for Autonomous Motion
 
         // Variables for getting distances and circumferences
         // Used in autonomous motion
-        private static double PULSES_PER_REVOLUTION = 1120;
-        private static double PULLEY_RADIUS = 0.048813; //Radius in m
-        private static double PULLEY_CIRCUMFERENCE = PULLEY_RADIUS * 2 * Math.PI;
-        private static double DISTANCE_FROM_CENTER_TO_TREAD = 192.0875;
-        private static int TOO_MANY_TICKS_WITHOUT_MOVING = 50;
+        private final static double PULSES_PER_REVOLUTION = 1120;
+        private final static double PULLEY_RADIUS = 0.048813; //Radius in m
+        private final static double PULLEY_CIRCUMFERENCE = PULLEY_RADIUS * 2 * Math.PI;
+        private final static double DISTANCE_FROM_CENTER_TO_TREAD = 192.0875;
+        private final static int TOO_MANY_TICKS_WITHOUT_MOVING = 50;
 
         // Variables used for defaults in movment functions
         // Used in autonomous motion
@@ -137,7 +136,7 @@ public class MotorController {
     public static void resetServos()
     {
         //Robot Preparing for Movement-in-game
-        climberDepositor.setPosition(CLMB_DEP_REST);
+        climberDepositor.setPosition(CLIMBER_DEPOSITOR_REST);
         leftTrigger.setPosition(LEFT_TRIGGER_UP);
         rightTrigger.setPosition(RIGHT_TRIGGER_UP);
         leftFrontCowCatcher.setPosition(LEFT_FRONT_COW_CATCHER_DOWN);
@@ -157,7 +156,7 @@ public class MotorController {
         currentOperator.telemetry.addData("Right Motor Encoder Value = ", upperRightMotor.getCurrentPosition());
     }
 
-    public static void displayMovmentMotorValues()
+    public static void displayMovementMotorValues()
     {
         currentOperator.telemetry.addData("Left Front Motor Power = ", upperLeftMotor.getPower());
         currentOperator.telemetry.addData("Left Back Motor Power = ", lowerLeftMotor.getPower());
@@ -291,18 +290,18 @@ public class MotorController {
      * A method for setting the Servo that controls the deposition of climbers
      * to the position where it will deposit the climbers
      */
-    public static void depositClimbers()
+    public static void setClimberDepositorDown()
     {
-        climberDepositor.setPosition(CLMB_DEP_UP);
+        climberDepositor.setPosition(CLIMBER_DEPOSITOR_UP);
     }
 
     /**
      * A method for setting the Servo that controls the deposition of climbers
      * to its resting position
      */
-    public static void resetClimberDepositor()
+    public static void setClimberDepositorRest()
     {
-        climberDepositor.setPosition(CLMB_DEP_REST);
+        climberDepositor.setPosition(CLIMBER_DEPOSITOR_REST);
     }
 
     /**
@@ -314,14 +313,14 @@ public class MotorController {
         climberDepositor.setPosition(position);
     }
 
-    public static void setActiveTriggerRight()
+    public static void setActiveSideRed()
     {
-        activateTriggerIsLeft = false;
+        sideIsBlue = false;
     }
 
-    public static void setActiveTriggerLeft()
+    public static void setActiveSideBlue()
     {
-        activateTriggerIsLeft = true;
+        sideIsBlue = true;
     }
 
     /**
@@ -329,7 +328,7 @@ public class MotorController {
      */
     public static void setTriggerUp()
     {
-        if (activateTriggerIsLeft)
+        if (sideIsBlue)
         {
             leftTrigger.setPosition(LEFT_TRIGGER_UP);
         }
@@ -341,7 +340,7 @@ public class MotorController {
 
     public static void setTriggerMid()
     {
-        if (activateTriggerIsLeft)
+        if (sideIsBlue)
         {
             leftTrigger.setPosition(LEFT_TRIGGER_MID);
         }
@@ -353,7 +352,7 @@ public class MotorController {
 
     public static void setTriggerLow()
     {
-        if (activateTriggerIsLeft)
+        if (sideIsBlue)
         {
             leftTrigger.setPosition(LEFT_TRIGGER_LOW);
         }
@@ -427,6 +426,30 @@ public class MotorController {
     {
         leftDebrisRamp.setPosition(LEFT_RAMP_DOWN);
         rightDebrisRamp.setPosition(RIGHT_RAMP_DOWN);
+    }
+
+    public static void setDebrisRampForSideUp()
+    {
+        if (sideIsBlue)
+        {
+            rightDebrisRamp.setPosition(RIGHT_RAMP_UP);
+        }
+        else
+        {
+            leftDebrisRamp.setPosition(LEFT_RAMP_UP);
+        }
+    }
+
+    public static void setDebrisRampForSideDown()
+    {
+        if (sideIsBlue)
+        {
+            rightDebrisRamp.setPosition(RIGHT_RAMP_DOWN);
+        }
+        else
+        {
+            leftDebrisRamp.setPosition(LEFT_RAMP_DOWN);
+        }
     }
 
     /**
