@@ -10,18 +10,36 @@ public class InputController {
     // Values for different axes on the gamepads
 
         public float leftY1 = 0;
+        public float leftX1 = 0;
         public float rightY1 = 0;
+        public float rightX1 = 0;
+
         public float rightTrigger1 = 0;
         public float leftTrigger1 = 0;
+
+        public float leftY2 = 0;
+        public float leftX2 = 0;
+        public float rightY2 = 0;
+        public float rightX2 = 0;
+
         public float rightTrigger2 = 0;
         public float leftTrigger2 = 0;
 
         // Constants for thresholds on each axis
 
             public static final float LEFT_Y1_THRESHOLD = 0.05f;
+            public static final float LEFT_X1_THRESHOLD = 0.05f;
             public static final float RIGHT_Y1_THRESHOLD = 0.05f;
+            public static final float RIGHT_X1_THRESHOLD = 0.05f;
+
             public static final float RIGHT_TRIGGER_1_THRESHOLD = 0.9f;
             public static final float LEFT_TRIGGER_1_THRESHOLD = 0.9f;
+
+            public static final float LEFT_Y2_THRESHOLD = 0.05f;
+            public static final float LEFT_X2_THRESHOLD = 0.05f;
+            public static final float RIGHT_Y2_THRESHOLD = 0.05f;
+            public static final float RIGHT_X2_THRESHOLD = 0.05f;
+
             public static final float RIGHT_TRIGGER_2_THRESHOLD = 0.0f;
             public static final float LEFT_TRIGGER_2_THRESHOLD = 0.0f;
 
@@ -184,19 +202,27 @@ public class InputController {
         prevDPadUp2 = dPadUp2;
         prevDPadRight2 = dPadRight2;
 
-        // Update left and right axis values
+        // Update left and right axis values for gamepad 1
         leftY1 = -gamepad1.left_stick_y;
+        leftX1 = gamepad1.left_stick_x;
         rightY1 = -gamepad1.right_stick_y;
+        rightX1 = gamepad1.right_stick_x;
 
         // If values on each axis are less than the threshold, set them to zero
 
         if (Math.abs(leftY1) < LEFT_Y1_THRESHOLD)
             leftY1 = 0;
 
+        if (Math.abs(leftX1) < LEFT_X1_THRESHOLD)
+            leftX1 = 0;
+
         if (Math.abs(rightY1) < RIGHT_Y1_THRESHOLD)
             rightY1 = 0;
 
-        // Update trigger values
+        if (Math.abs(rightX1) < RIGHT_X1_THRESHOLD)
+            rightX1 = 0;
+
+        // Update trigger values for gamepad 1
         rightTrigger1 = gamepad1.right_trigger;
         leftTrigger1 = gamepad1.left_trigger;
 
@@ -224,7 +250,27 @@ public class InputController {
             leftTrigger1Bool = true;
         }
 
-        // Update trigger values
+        // Update left and right axis values for gamepad 2
+        leftY2 = -gamepad2.left_stick_y;
+        leftX2 = gamepad2.left_stick_x;
+        rightY2 = -gamepad2.right_stick_y;
+        rightX2 = gamepad2.right_stick_x;
+
+        // If values on each axis are less than the threshold, set them to zero
+
+        if (Math.abs(leftY2) < LEFT_Y2_THRESHOLD)
+            leftY2 = 0;
+
+        if (Math.abs(leftX2) < LEFT_X2_THRESHOLD)
+            leftX2 = 0;
+
+        if (Math.abs(rightY2) < RIGHT_Y2_THRESHOLD)
+            rightY2 = 0;
+
+        if (Math.abs(rightX2) < RIGHT_X2_THRESHOLD)
+            rightX2 = 0;
+
+        // Update trigger values for gamepad 2
         rightTrigger2 = gamepad2.right_trigger;
         leftTrigger2 = gamepad2.left_trigger;
 
