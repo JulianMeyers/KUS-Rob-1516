@@ -78,10 +78,11 @@ public class Autonomous_Climber_Dump extends LinearOpMode {
         MotorController.init(hardwareMap, this);
 
 
-        MotorController.goForwards(1, 10);
+        MotorController.goForwards(1, 1.12);
         MotorController.turn(0.5, 45);
-        MotorController.goForwards(1, 5);
+        MotorController.goForwards(1, 0.3);
         MotorController.turn(0.5, 45);
+        MotorController.goForwards(1, 1.27);
 
         MotorController.setClimberDepositor(CLMB_DEP_UP);
         MotorController.setClimberDepositor(CLMB_DEP_REST);
