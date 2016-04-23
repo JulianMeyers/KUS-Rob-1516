@@ -495,7 +495,7 @@ public class MotorController {
         // Will stop the wheels when they get stuck
         while (Math.abs(upperLeftMotor.getCurrentPosition()-initialPositionUpperLeftMotor) < Math.abs(encoderDistance) || Math.abs(upperRightMotor.getCurrentPosition()-initialPositionUpperRightMotor) < Math.abs(encoderDistance))
         {
-            if (Math.abs(upperLeftMotor.getCurrentPosition()-initialPositionUpperLeftMotor) < Math.abs(encoderDistance))
+            if (Math.abs(upperLeftMotor.getCurrentPosition()-initialPositionUpperLeftMotor) >= Math.abs(encoderDistance))
             {
                 setLeftMotors(0); // Stop Motor if left side is in position
             }
@@ -509,7 +509,7 @@ public class MotorController {
             }
 
 
-            if (Math.abs(upperRightMotor.getCurrentPosition()-initialPositionUpperRightMotor) < Math.abs(encoderDistance))
+            if (Math.abs(upperRightMotor.getCurrentPosition()-initialPositionUpperRightMotor) >= Math.abs(encoderDistance))
             {
                 setRightMotors(0);  // Stop Motor if left side is in position
             }
