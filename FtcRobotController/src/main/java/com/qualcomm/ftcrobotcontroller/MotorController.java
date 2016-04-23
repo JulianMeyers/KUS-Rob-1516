@@ -141,6 +141,8 @@ public class MotorController {
         rightTrigger.setPosition(RIGHT_TRIGGER_UP);
         leftFrontCowCatcher.setPosition(LEFT_FRONT_COW_CATCHER_DOWN);
         rightFrontCowCatcher.setPosition(RIGHT_FRONT_COW_CATCHER_DOWN);
+        leftRearCowCatcher.setPosition(LEFT_REAR_COW_CATCHER_DOWN);
+        rightRearCowCatcher.setPosition(RIGHT_REAR_COW_CATCHER_DOWN);
         elbowServo.setPosition(ELBOW_POS_MIN_VAL);
         shoulderServo.setPosition(SHOULDER_POS_MIN_VAL);
         rightDebrisRamp.setPosition(RIGHT_RAMP_UP);

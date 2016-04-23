@@ -36,6 +36,8 @@ public class Mark5BlueTeleop extends OpMode {
         if (!hasResetServos)
         {
             MotorController.resetServos();
+            MotorController.setLeftMotors(0);
+            MotorController.setRightMotors(0);
             hasResetServos = true;
         }
 
