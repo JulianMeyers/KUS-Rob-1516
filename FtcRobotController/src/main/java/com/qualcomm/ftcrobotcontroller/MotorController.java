@@ -384,8 +384,8 @@ public class MotorController {
 
     public static void setRearCowcatchersDown()
     {
-        leftFrontCowCatcher.setPosition(LEFT_REAR_COW_CATCHER_DOWN);
-        rightFrontCowCatcher.setPosition(RIGHT_REAR_COW_CATCHER_DOWN);
+        leftRearCowCatcher.setPosition(LEFT_REAR_COW_CATCHER_DOWN);
+        rightRearCowCatcher.setPosition(RIGHT_REAR_COW_CATCHER_DOWN);
     }
 
     public static void setRightDebrisRampUp()
