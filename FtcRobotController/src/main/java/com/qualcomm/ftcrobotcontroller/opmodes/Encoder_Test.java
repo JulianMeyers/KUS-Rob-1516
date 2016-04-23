@@ -16,8 +16,9 @@ public class Encoder_Test extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        waitForStart();
         MotorController.init(hardwareMap, this);
+        waitForStart();
+        MotorController.resetServos();
 
         double distanceMoved = MotorController.goForwards(1, 1, true, 100);
 

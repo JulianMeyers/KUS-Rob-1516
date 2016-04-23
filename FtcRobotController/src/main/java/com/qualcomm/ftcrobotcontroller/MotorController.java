@@ -93,7 +93,7 @@ public class MotorController {
         // Variables used for defaults in movment functions
         // Used in autonomous motion
 
-        private static int DEFUALT_TICKS_PER_STEP = 100;
+        private static int DEFAULT_TICKS_PER_STEP = 100;
 
     private static OpMode currentOperator;
 
@@ -622,7 +622,7 @@ public class MotorController {
      */
     public static double goForwards(double power, double distance, boolean showTelemetry)
     {
-        return goForwards(power, distance, showTelemetry, DEFUALT_TICKS_PER_STEP);
+        return goForwards(power, distance, showTelemetry, DEFAULT_TICKS_PER_STEP);
     }
 
     /**
@@ -634,7 +634,7 @@ public class MotorController {
      */
     public static double goForwards(double power, double distance)
     {
-        return goForwards(power, distance, false, DEFUALT_TICKS_PER_STEP);
+        return goForwards(power, distance, false, DEFAULT_TICKS_PER_STEP);
     }
 
     /**
@@ -704,7 +704,7 @@ public class MotorController {
      */
     public static double turn(double power, double angle, boolean showTelemetry)
     {
-        return turn(power, angle, showTelemetry, DEFUALT_TICKS_PER_STEP);
+        return turn(power, angle, showTelemetry, DEFAULT_TICKS_PER_STEP);
     }
 
     /**
@@ -716,6 +716,18 @@ public class MotorController {
      */
     public static double turn(double power, double angle)
     {
-        return turn(power, angle, false, DEFUALT_TICKS_PER_STEP);
+        return turn(power, angle, false, DEFAULT_TICKS_PER_STEP);
+    }
+
+    public static double sidedTurn(double power, double angle)
+    {
+        if (sideIsBlue)
+        {
+            return turn(power, angle, false, DEFAULT_TICKS_PER_STEP);
+        }
+        else
+        {
+            return turn(power, -angle, false, DEFAULT_TICKS_PER_STEP);
+        }
     }
 }
