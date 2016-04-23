@@ -730,4 +730,43 @@ public class MotorController {
             return turn(power, -angle, false, DEFAULT_TICKS_PER_STEP);
         }
     }
+
+    public static boolean dumpClimbers() throws InterruptedException
+    {
+        double amountCompleted = MotorController.goForwards(1, 1.12);
+
+        if (!checkPercentDifference(amountCompleted, 1.12, .01))
+            return false;
+
+        amountCompleted = MotorController.sidedTurn(0.5, 45);
+
+        if (!checkPercentDifference(amountCompleted, 45, 1))
+            return false;
+
+        amountCompleted = MotorController.goForwards(1, 0.3);
+
+        if (!checkPercentDifference(amountCompleted, 0.03, .01))
+            return false;
+
+        amountCompleted = MotorController.sidedTurn(0.5, 45);
+
+        if (!checkPercentDifference(amountCompleted, 45, 1))
+            return false;
+
+        amountCompleted = MotorController.goForwards(1, 1.27);
+
+        if (!checkPercentDifference(amountCompleted, 1.27, .01))
+            return false;
+
+        MotorController.setClimberDepositorDown();
+        currentOperator.wait(500);
+        MotorController.setClimberDepositorRest();
+
+        return true;
+    }
+
+    private static boolean checkPercentDifference(double amountCompleted, double amountToComplete, double errorRange)
+    {
+        return Math.abs((amountCompleted - amountCompleted)/amountCompleted) < errorRange;
+    }
 }
