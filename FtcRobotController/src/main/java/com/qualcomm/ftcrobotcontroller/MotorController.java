@@ -530,7 +530,7 @@ public class MotorController {
             prevDistanceLeft = upperLeftMotor.getCurrentPosition() - initialPositionUpperLeftMotor; // Update the previous position variable
             prevDistanceRight = upperRightMotor.getCurrentPosition() - initialPositionUpperRightMotor; // Update the previous position variable
 
-            // If we want to show the distances on telemtry, show it
+            // If we want to show the distances on telemetry, show it
             if (showTelemetry)
             {
                 double leftMotorDistance = (upperLeftMotor.getCurrentPosition() - initialPositionUpperLeftMotor) / PULSES_PER_REVOLUTION * PULLEY_CIRCUMFERENCE;
@@ -542,7 +542,7 @@ public class MotorController {
             // Fancy code for putting in a delay
             try
             {
-                Thread.sleep(5);
+                Thread.sleep(16);
             }
             catch (InterruptedException e)
             {
