@@ -35,8 +35,11 @@ public class FtcOpModeRegister implements OpModeRegister {
     //manager.register("Encoder Hardware Check", Encoder_Hardware_Check.class);
     manager.register("Pregame_Setup", Pregame_Setup.class);
     manager.register("Encoder_Test", Encoder_Test.class);
-    manager.register("Autonomous Evil Climber Dump", AutonomousClimberDumpBlue.class);
-    manager.register("Autonomous Climber Dump", AutonomousClimberDumpBlue.class);
-    manager.register("Mid Zone Park", MidZoneParkBlue.class);
+    manager.register("Autonomous Defensive Climber Dump Blue", AutonomousDefensiveClimberDumpBlue.class);
+    manager.register("Autonomous Defensive Climber Dump Red", AutonomousDefensiveClimberDumpRed.class);
+    manager.register("Autonomous Climber Dump Blue", AutonomousClimberDumpBlue.class);
+    manager.register("Autonomous Climber Dump Red", AutonomousClimberDumpRed.class);
+    manager.register("Mid Zone Park Red", MidZoneParkRed.class);
+    manager.register("Mid Zone Park Blue", MidZoneParkBlue.class);
   }
 }

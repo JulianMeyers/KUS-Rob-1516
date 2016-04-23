@@ -58,15 +58,15 @@ public class MotorController {
         private final static double RIGHT_FRONT_COW_CATCHER_UP = 0.8;
         private final static double RIGHT_FRONT_COW_CATCHER_DOWN = 0.35;
 
-        private final static double LEFT_REAR_COW_CATCHER_UP = 0;
-        private final static double RIGHT_REAR_COW_CATCHER_UP = 1;
-        private final static double LEFT_REAR_COW_CATCHER_DOWN = 1;
-        private final static double RIGHT_REAR_COW_CATCHER_DOWN = 0;
+        private final static double LEFT_REAR_COW_CATCHER_UP = 1;
+        private final static double RIGHT_REAR_COW_CATCHER_UP = 0;
+        private final static double LEFT_REAR_COW_CATCHER_DOWN = 0;
+        private final static double RIGHT_REAR_COW_CATCHER_DOWN = 1;
 
         private final static double LIFT_SPINNER_RIGHT_PWR_OUT = -1;
         private final static double LIFT_SPINNER_RIGHT_PWR_IN = 1;
-        private final static double LIFT_SPINNER_LEFT_PWR_IN = 1;
-        private final static double LIFT_SPINNER_LEFT_PWR_OUT = -1;
+        private final static double LIFT_SPINNER_LEFT_PWR_IN = -1;
+        private final static double LIFT_SPINNER_LEFT_PWR_OUT = 1;
 
         private final static double LEFT_RAMP_UP = 0.1;
         private final static double LEFT_RAMP_DOWN = 0.5;
