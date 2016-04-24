@@ -1,5 +1,6 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import com.qualcomm.ftcrobotcontroller.InputController;
 import com.qualcomm.ftcrobotcontroller.MotorController;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -102,6 +103,7 @@ public class Red_Teleop extends OpMode {
         //Which Name Correlates to Which Button
         float LeftY1 = -gamepad1.left_stick_y;
         float RightY1 = -gamepad1.right_stick_y;
+        float RightX2 = gamepad2.right_stick_x;
         float RightTrigger1 = gamepad1.right_trigger;
         float LeftTrigger1 = gamepad1.left_trigger;
         float RightTrigger2 = gamepad2.right_trigger;
@@ -248,30 +250,9 @@ public class Red_Teleop extends OpMode {
 
         //Debris Depositor Controls
 
-        if (ButtonB2) {
+        //Go at right x poition
+        DebrisDepositorSpinner.setPower(RightX2);
 
-            //forward at full speed (deposit button)
-            DebrisDepositorSpinner.setPower(-0.25);
-
-        }
-
-        if (ButtonX2) {
-
-            //forward at half speed (return button)
-            DebrisDepositorSpinner.setPower(0);
-        }
-
-        if (DPadLeft2) {
-
-            //backward at full speed (deposit button)
-            DebrisDepositorSpinner.setPower(0.25);
-        }
-
-        if (DPadRight2) {
-
-            //backward at half speed (return button)
-            DebrisDepositorSpinner.setPower(0);
-        }
 
         //Debris Ramp Controls
 

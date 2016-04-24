@@ -126,29 +126,7 @@ public class Mark5BlueTeleop extends OpMode {
 
         //Debris Depositor Controls
 
-        if (input.buttonB2)
-        {
-            //forward at 1/4 speed (deposit button)
-            MotorController.setDebrisDepositorSpinner(-0.25);
-        }
-
-        if (input.buttonX2) {
-
-            //forward at half speed (return button)
-            MotorController.setDebrisDepositorSpinner(1);
-        }
-
-        if (input.dPadLeft2) {
-
-            //backward at full speed (deposit button)
-            MotorController.setDebrisDepositorSpinner(0.25);
-        }
-
-        if (input.dPadRight2) {
-
-            //backward at half speed (return button)
-            MotorController.setDebrisDepositorSpinner(0);
-        }
+        MotorController.setDebrisDepositorSpinner(input.rightX2);
 
         //Debris Ramp controls (Right only for blue side)
 
