@@ -126,7 +126,7 @@ public class Mark5BlueTeleop extends OpMode {
 
         //Debris Depositor Controls
 
-        MotorController.setDebrisDepositorSpinner(input.rightX2);
+        MotorController.setDebrisDepositorSpinner(-input.rightX2);
 
         //Debris Ramp controls (Right only for blue side)
 
