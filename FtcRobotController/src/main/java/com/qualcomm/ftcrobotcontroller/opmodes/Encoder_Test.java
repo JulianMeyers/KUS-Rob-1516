@@ -22,7 +22,11 @@ public class Encoder_Test extends LinearOpMode {
 
         double distanceMoved = MotorController.goForwards(1, 1, true, 100);
 
-        double angleMoved = MotorController.turn(1, 180, true, 100);
+        telemetry.addData("Distance Moved = ", distanceMoved);
+
+        double angleMoved = MotorController.turn(1, 45, true, 100);
+
+        telemetry.addData("Angle Moved = ", angleMoved);
     }
 
 }

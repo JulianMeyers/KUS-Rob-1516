@@ -497,7 +497,7 @@ public class MotorController {
         {
             if (Math.abs(upperLeftMotor.getCurrentPosition()-initialPositionUpperLeftMotor) >= Math.abs(encoderDistance))
             {
-                setLeftMotors(0); // Stop Motor if left side is in position
+                //setLeftMotors(0); // Stop Motor if left side is in position
             }
             else if ((upperLeftMotor.getCurrentPosition()-initialPositionUpperLeftMotor) == prevDistanceLeft)
             {
@@ -511,7 +511,7 @@ public class MotorController {
 
             if (Math.abs(upperRightMotor.getCurrentPosition()-initialPositionUpperRightMotor) >= Math.abs(encoderDistance))
             {
-                setRightMotors(0);  // Stop Motor if left side is in position
+                //setRightMotors(0);  // Stop Motor if left side is in position
             }
             else if ((upperRightMotor.getCurrentPosition() - initialPositionUpperRightMotor) == prevDistanceRight)
             {
@@ -537,6 +537,8 @@ public class MotorController {
                 currentOperator.telemetry.addData("Left Motor Distance = ", leftMotorDistance);
                 double rightMotorDistance = (upperRightMotor.getCurrentPosition() - initialPositionUpperRightMotor) / PULSES_PER_REVOLUTION * PULLEY_CIRCUMFERENCE;
                 currentOperator.telemetry.addData("Right Motor Distance = ", rightMotorDistance);
+                currentOperator.telemetry.addData("Encoder Distance = ", encoderDistance);
+                currentOperator.telemetry.addData("Upper Left Motor Current Position = ", upperLeftMotor.getCurrentPosition());
             }
 
             // Fancy code for putting in a delay
@@ -648,7 +650,7 @@ public class MotorController {
     public static double turn(double power, double angle, boolean showTelemetry, int ticksPerStep)
     {
         double distanceAlongCircleToTurn = Math.toRadians(angle) * DISTANCE_FROM_CENTER_TO_TREAD;
-        int encoderDistance = (int)((PULSES_PER_REVOLUTION * distanceAlongCircleToTurn)/(PULLEY_CIRCUMFERENCE));
+        int encoderDistance = (int) Math.abs((PULSES_PER_REVOLUTION * distanceAlongCircleToTurn)/(PULLEY_CIRCUMFERENCE));
 
         currentOperator.telemetry.addData("Encoder Distance = ", encoderDistance);
 

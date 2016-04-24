@@ -128,14 +128,14 @@ public class Mark5BlueTeleop extends OpMode {
 
         if (input.buttonB2)
         {
-            //forward at full speed (deposit button)
+            //forward at 1/4 speed (deposit button)
             MotorController.setDebrisDepositorSpinner(-0.25);
         }
 
         if (input.buttonX2) {
 
             //forward at half speed (return button)
-            MotorController.setDebrisDepositorSpinner(0);
+            MotorController.setDebrisDepositorSpinner(1);
         }
 
         if (input.dPadLeft2) {
