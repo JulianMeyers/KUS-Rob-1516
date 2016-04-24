@@ -41,6 +41,5 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("Autonomous Climber Dump Red", AutonomousClimberDumpRed.class);
     manager.register("Mid Zone Park Red", MidZoneParkRed.class);
     manager.register("Mid Zone Park Blue", MidZoneParkBlue.class);
-    manager.register("Shoulder Test", ShoulderTest.class);
   }
 }
