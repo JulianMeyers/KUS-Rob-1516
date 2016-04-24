@@ -49,10 +49,10 @@ public class Red_Teleop extends OpMode {
     private final static double ShldrPosGoalMaxVal = 1;
     private final static double ShldrPosMinVal = 0.15;
     private final static double ShldrPosMaxVal = 0.5;
-    private final static double LeftFrontCowCatcherUp = 0.35; //changed from 0.3
-    private final static double LeftFrontCowCatcherDown = 0.8; //changed from 0.65
-    private final static double RightFrontCowCatcherUp = 0.75; //changed from 0.8
-    private final static double RightFrontCowCatcherDown = 0.2; //changed from 0.35
+    private final static double LeftFrontCowCatcherUp = 0.45; //changed from 0.3
+    private final static double LeftFrontCowCatcherDown = 0.9; //changed from 0.65
+    private final static double RightFrontCowCatcherUp = 0.75;//changed from 0.8
+    private final static double RightFrontCowCatcherDown = 0.2;//changed from 0.35
     private final static double LSRPwrOut = -1;
     private final static double LSRPwrIn = 1;
     private final static double LSLPwrIn = 1;
