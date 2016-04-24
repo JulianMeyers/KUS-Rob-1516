@@ -53,10 +53,10 @@ public class MotorController {
         private final static double SHOULDER_POS_MIN_VAL = 0.15;
         private final static double SHOULDER_POS_MAX_VAL = 0.5;
 
-        private final static double LEFT_FRONT_COW_CATCHER_UP = 0.2;
-        private final static double LEFT_FRONT_COW_CATCHER_DOWN = 0.65;
-        private final static double RIGHT_FRONT_COW_CATCHER_UP = 0.8;
-        private final static double RIGHT_FRONT_COW_CATCHER_DOWN = 0.35;
+        private final static double LEFT_FRONT_COW_CATCHER_UP = 0.45;
+        private final static double LEFT_FRONT_COW_CATCHER_DOWN = 0.9;
+        private final static double RIGHT_FRONT_COW_CATCHER_UP = 0.75;
+        private final static double RIGHT_FRONT_COW_CATCHER_DOWN = 0.2;
 
         private final static double LEFT_REAR_COW_CATCHER_UP = 1;
         private final static double RIGHT_REAR_COW_CATCHER_UP = 0;

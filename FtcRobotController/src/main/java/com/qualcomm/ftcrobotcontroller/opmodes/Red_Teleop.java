@@ -167,6 +167,7 @@ public class Red_Teleop extends OpMode {
             //if dpad 1 down is pressed Right Trigger moves to low position
         }
 
+        //Rear Cow Catcher Controls
         if (ButtonX1) {
             MotorController.setRearCowcatchersUp();
         }
